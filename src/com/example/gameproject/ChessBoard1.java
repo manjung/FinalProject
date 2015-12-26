@@ -34,14 +34,10 @@ public class ChessBoard1 extends View{
 	private Paint paint_Line;				//棋盤畫筆
 	private Paint Paint_ears;               //擦子
     private int textSize;                   //棋中字的大小
-	private float[][] circleLocX  ;
-	private float[][] circleLocY ;
-	private float touchPointX = 0;
-	private float touchPointY = 0;
-	private boolean IstouchDownCircle;  //已按下圓 
-	private int Num;                    //紀錄按下哪顆棋子
-	private int colorside;              //紀錄現在是哪一方下棋
-	private int lastColorside;          //紀錄上一次是哪一方下棋
+	private boolean IstouchDownCircle;      //已按下圓 
+	private int Num;                        //紀錄按下哪顆棋子
+	private int colorside;                  //紀錄現在是哪一方下棋
+	private int lastColorside;              //紀錄上一次是哪一方下棋
 	
 	private boolean contorlBoundary ;
 	
@@ -91,10 +87,8 @@ public class ChessBoard1 extends View{
 		setChessBoardCoordinate();
 		setChessRadiu();
 		setTableColor();
-		setChess();
 		setTextSize();
 		setPaint();
-		
 		
 	}
 	
@@ -152,12 +146,6 @@ public class ChessBoard1 extends View{
 	public void setChessRadiu()   //設定棋子半徑
 	{
 		circleRadiu = lattice/2;
-	}
-	
-	public void setChess()      
-	{
-		circleLocX = new float[2][16];
-		circleLocY = new float[2][16];
 	}
 	
 	public void setTextSize()      //設定字型大小
@@ -233,8 +221,7 @@ public class ChessBoard1 extends View{
 					starHeight+RedChess[i].getYLoc()*lattice,circleRadiu,paint_Chess);
 			canvas.drawText(RedChess[i].getName(), startWeight+RedChess[i].getXLoc()*lattice-circleRadiu/2, 
 					starHeight+RedChess[i].getYLoc()*lattice+circleRadiu/2, paint_REDText);
-			circleLocX[RedChess[i].getColor()][i]= startWeight+RedChess[i].getXLoc()*lattice;
-			circleLocY[RedChess[i].getColor()][i]= starHeight+RedChess[i].getYLoc()*lattice;
+			
 		}
 		
 		for(int i=0 ; i < BlackChess.length ; i++)
@@ -243,16 +230,14 @@ public class ChessBoard1 extends View{
 					starHeight+BlackChess[i].getYLoc()*lattice,circleRadiu,paint_Chess);
 			canvas.drawText(BlackChess[i].getName(), startWeight+BlackChess[i].getXLoc()*lattice-circleRadiu/2, 
 					starHeight+BlackChess[i].getYLoc()*lattice+circleRadiu/2, paint_BLACKText);
-			circleLocX[BlackChess[i].getColor()][i]= startWeight+BlackChess[i].getXLoc()*lattice;
-			circleLocY[BlackChess[i].getColor()][i]= starHeight+BlackChess[i].getYLoc()*lattice;
+			
 		}
 		
 	}
 	
 	public void c_TouchDown(float touchX , float touchY)   //觸碰--按下
 	{
-		touchPointX = touchX;
-		touchPointY = touchY;
+		
 		IstouchDownCircle = false;
 		
 		int[] coordinate = new int[2];
@@ -293,17 +278,7 @@ public class ChessBoard1 extends View{
 	public void c_TouchMove(float touchX , float touchY )  //觸碰--移動
 	{
 		
-		if(IstouchDownCircle)
-		{
-			circleLocX[colorside][Num] = touchX ;
-			circleLocY[colorside][Num] = touchY ;
-			
-		}
 		
-		touchPointX = touchX;
-		touchPointY = touchY;
-		
-		invalidate();
 		 
 	}
 	
