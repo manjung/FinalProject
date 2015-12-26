@@ -2,14 +2,12 @@ package com.example.gameproject;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
-import android.view.View.MeasureSpec;
+
 
 
 public class ChessBoard1 extends View{
@@ -38,6 +36,7 @@ public class ChessBoard1 extends View{
 	private int Num;                        //紀錄按下哪顆棋子
 	private int colorside;                  //紀錄現在是哪一方下棋
 	private int lastColorside;              //紀錄上一次是哪一方下棋
+	private Location Loc;                   //紀錄位置
 	
 	private boolean contorlBoundary ;
 	
@@ -240,15 +239,13 @@ public class ChessBoard1 extends View{
 		
 		IstouchDownCircle = false;
 		
-		int[] coordinate = new int[2];
-		coordinate = absolTorelat(touchX,touchY);
+		absolTorelat(touchX,touchY);
 		boolean search = true; 
-		
 		
 		for(int i=0 ; i < RedChess.length && search == true; i++)
 		{
-			if(RedChess[i].getXLoc() == coordinate[0] 
-					&& RedChess[i].getYLoc() == coordinate[1] )
+			if(RedChess[i].getXLoc() == Loc.getXLocation() 
+					&& RedChess[i].getYLoc() == Loc.getYLocation() )
 			{
 				Num=i;
 				colorside = 0;
@@ -261,8 +258,9 @@ public class ChessBoard1 extends View{
 		
 		for(int i=0 ; i < BlackChess.length && search == true; i++)
 		{
-			if(BlackChess[i].getXLoc() == coordinate[0] 
-					&& BlackChess[i].getYLoc() == coordinate[1] )
+			
+			if(BlackChess[i].getXLoc() == Loc.getXLocation() 
+					&& BlackChess[i].getYLoc() == Loc.getYLocation() )
 			{
 				Num=i;
 				colorside = 1;
@@ -287,18 +285,18 @@ public class ChessBoard1 extends View{
 		
 		if(IstouchDownCircle)
 		{	
-			int[] coordinate = new int[2];
-			coordinate = absolTorelat(touchX ,touchY);          //將改變後的座標存回
-			if(checkLegitimate(coordinate[0],coordinate[1]))	//確認落點是否正確
+			
+			absolTorelat(touchX ,touchY);        //將改變後的座標存回
+			if(checkLegitimate(Loc.getXLocation(),Loc.getYLocation()))//確認落點是否正確
 			{
 				if(colorside == 0)
 				{	
-					RedChess[Num].setXLoc(coordinate[0]);
-					RedChess[Num].setYLoc(coordinate[1]);
+					RedChess[Num].setXLoc(Loc.getXLocation());
+					RedChess[Num].setYLoc(Loc.getYLocation());
 				}else
 				{
-					BlackChess[Num].setXLoc(coordinate[0]);
-					BlackChess[Num].setYLoc(coordinate[1]);
+					BlackChess[Num].setXLoc(Loc.getXLocation());
+					BlackChess[Num].setYLoc(Loc.getYLocation());
 				}	
 			}
 		}
@@ -308,27 +306,27 @@ public class ChessBoard1 extends View{
 		
 	}
 	
-	public int[] absolTorelat(float touchX , float touchY)   //絕對座標轉換為相對座標
+	public void absolTorelat(float touchX , float touchY)   //絕對座標轉換為相對座標
 	{
-		int[] coordinate = new int[2];
 		
 		float x = (touchX-startWeight)/lattice;
 		float y = (touchY-starHeight)/lattice;
 		
+		Loc = new Location();
+		
 		if(x - (int)x >0.5)
 		{
-			coordinate[0]=(int)x+1;
+			Loc.setXLocation((int)x+1);
 		}else
-			coordinate[0]=(int)x;
+			
+			Loc.setXLocation((int)x);
 		
 		if(y - (int)y >0.5)
 		{
-			coordinate[1]=(int)y+1;
+			Loc.setYLocation((int)y+1);
 		}else
-			coordinate[1]=(int)y;
-		
-		
-		return coordinate;
+			
+		    Loc.setYLocation((int)y);
 		
 	}
 	
