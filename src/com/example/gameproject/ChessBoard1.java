@@ -35,7 +35,6 @@ public class ChessBoard1 extends View{
 	private boolean IstouchDownCircle;      //已按下圓 
 	private int Num;                        //紀錄按下哪顆棋子
 	private int colorside;                  //紀錄現在是哪一方下棋
-	private int lastColorside;              //紀錄上一次是哪一方下棋
 	private Location Loc;                   //紀錄位置
 	
 	private boolean contorlBoundary ;
@@ -239,7 +238,7 @@ public class ChessBoard1 extends View{
 		
 		IstouchDownCircle = false;
 		
-		absolTorelat(touchX,touchY);
+		absolTorelat(touchX,touchY);       
 		boolean search = true; 
 		
 		for(int i=0 ; i < RedChess.length && search == true; i++)
@@ -264,6 +263,7 @@ public class ChessBoard1 extends View{
 			{
 				Num=i;
 				colorside = 1;
+				search = false;
 				IstouchDownCircle = true;
 			}
 			
@@ -285,9 +285,8 @@ public class ChessBoard1 extends View{
 		
 		if(IstouchDownCircle)
 		{	
-			
 			absolTorelat(touchX ,touchY);        //將改變後的座標存回
-			if(checkLegitimate(Loc.getXLocation(),Loc.getYLocation()))//確認落點是否正確
+			if(checkLocation())                  //確認落點是否正確
 			{
 				if(colorside == 0)
 				{	
@@ -300,9 +299,9 @@ public class ChessBoard1 extends View{
 				}	
 			}
 		}
+		
 		IstouchDownCircle = false;
 		invalidate(); 
-		
 		
 	}
 	
@@ -330,10 +329,20 @@ public class ChessBoard1 extends View{
 		
 	}
 	
-	public boolean checkLegitimate(int X, int Y)  //確認棋子位置落點是否正確
+	public boolean checkLocation()
 	{
-		//放入規則class
-		return true;
+		Chess chess;
+		
+		if(colorside == 0)
+			chess = new Chess(RedChess[Num]);
+			
+		else
+			chess = new Chess(BlackChess[Num]);
+		
+		LongChessRegulation longChess = new LongChessRegulation (BlackChess,RedChess,Loc,chess);
+		
+		
+		return longChess.CanMove();
 	}
 	
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)    //測量view的大小

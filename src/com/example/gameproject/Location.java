@@ -6,19 +6,6 @@ public class Location
 	private int xLocation;
 	private int yLocation;
 	
-	public Location(int x, int y)
-	{
-		if(CheckLocation(x,y))
-		{
-			setLocation(x,y);
-			
-		}else
-		{
-			System.exit(0);
-		}	
-		
-	}
-	
 	
 	public Location()
 	{
@@ -52,10 +39,6 @@ public class Location
 		return this.yLocation;
 	}
 	
-	public boolean CheckLocation(int x,int y)
-	{
-		return true;
-		
-	}
+	
 
 }
