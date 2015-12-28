@@ -17,12 +17,15 @@ public class LongChessView extends Activity {
 	private static int BLACK = 1;
 	private static int RED = 0;
 	
-	ChessBoard1        chessBoard1 	      ;
-	Chess[] 	       RedChess   		  ;
-	Chess[] 	       BlackChess         ;
-	LinearLayout       layout             ;
-	LongChessViewGroup viewGroup          ;
+	Chess[] 	       		  RedChess   		  ;
+	Chess[] 	              BlackChess         ;
 	
+	LinearLayout              layout             ;
+	
+	LongChessViewGroup        viewGroup           ;
+	LongChessRecord           longCR              ;
+	LongChessBoardView        chessBoard 	      ;
+	LongChessControler        LCC                 ;
 
 	/*@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +55,15 @@ public class LongChessView extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.activity_long_chess_view);
-		
-		 creatChess();
-		
 		 requestWindowFeature(Window.FEATURE_NO_TITLE);   //全螢幕設定，不設定Y軸座標會偏移
 		 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
 		 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		 
-		 chessBoard1 = new ChessBoard1(LongChessView.this,BlackChess,RedChess);
+		 creatChess();
+		 longCR= new LongChessRecord(BlackChess,RedChess,9,10);
+		 chessBoard = new LongChessBoardView(LongChessView.this,longCR);
+		 
+		 LCC = new LongChessControler(longCR,chessBoard);
 		 layout = new LinearLayout(this);
 		 viewGroup = new LongChessViewGroup(this);
 		 
@@ -69,11 +73,13 @@ public class LongChessView extends Activity {
 		 //layout.setBackgroundResource(R.drawable.roundbox);
 		 layout.setOrientation(LinearLayout.VERTICAL);
 		 layout.setBackgroundColor(Color.BLACK);
-		 layout.addView(chessBoard1);
+		 layout.addView(chessBoard);
 		 viewGroup.addView(layout, new LinearLayout.LayoutParams(metrics.widthPixels, 
 				 ((metrics.heightPixels)/3)*2));
-		 Log.v("metrics.heightPixels", Integer.toString(metrics.heightPixels/3));
 		 setContentView(viewGroup);
+		 
+		 
+		 
 	}
 	
 	
@@ -91,11 +97,11 @@ public class LongChessView extends Activity {
 				new Chess(BLACK,"車",2,8,0),
 				new Chess(BLACK,"包",1,1,2),
 				new Chess(BLACK,"包",1,7,2),
-				new Chess(BLACK,"卒",0,0,3),
-				new Chess(BLACK,"卒",0,2,3),
-				new Chess(BLACK,"卒",0,4,3),
-				new Chess(BLACK,"卒",0,6,3),
-				new Chess(BLACK,"卒",0,8,3)};
+				new Chess(BLACK,"卒",7,0,3),
+				new Chess(BLACK,"卒",7,2,3),
+				new Chess(BLACK,"卒",7,4,3),
+				new Chess(BLACK,"卒",7,6,3),
+				new Chess(BLACK,"卒",7,8,3)};
 		
 		RedChess 	= new Chess[]{
 				new Chess(RED,"車",2,0,9),
@@ -109,11 +115,11 @@ public class LongChessView extends Activity {
 				new Chess(RED,"車",2,8,9),
 				new Chess(RED,"炮",1,1,7),
 				new Chess(RED,"炮",1,7,7),
-				new Chess(RED,"兵",0,0,6),
-				new Chess(RED,"兵",0,2,6),
-				new Chess(RED,"兵",0,4,6),
-				new Chess(RED,"兵",0,6,6),
-				new Chess(RED,"兵",0,8,6)};
+				new Chess(RED,"兵",7,0,6),
+				new Chess(RED,"兵",7,2,6),
+				new Chess(RED,"兵",7,4,6),
+				new Chess(RED,"兵",7,6,6),
+				new Chess(RED,"兵",7,8,6)};
 		
 	}
 
@@ -123,17 +129,22 @@ public class LongChessView extends Activity {
 		float touchPointX =  event.getX();
 		float touchPointY =  event.getY();
 		
+		LCC.set();
+		
 		switch(event.getAction())
 		{
 		 case MotionEvent.ACTION_DOWN:
-			  chessBoard1.c_TouchDown(touchPointX,touchPointY);
+			  LCC.c_TouchDown(touchPointX,touchPointY);
+			  
 			  break;
 		 case MotionEvent.ACTION_UP:
-			  chessBoard1.c_TouchUp(touchPointX,touchPointY);
+			  LCC.c_TouchUp(touchPointX,touchPointY);
+			  chessBoard.postInvalidate();
 		 	  break;
 		 case MotionEvent.ACTION_MOVE:
-			  chessBoard1.c_TouchMove(touchPointX,touchPointY);
-		 	  break;
+			  LCC.c_TouchMove(touchPointX,touchPointY);
+			  
+			  break;
 		 default:
 			  break;
 		}
@@ -143,16 +154,14 @@ public class LongChessView extends Activity {
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
+		
 		getMenuInflater().inflate(R.menu.long_chess_view, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+		
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;

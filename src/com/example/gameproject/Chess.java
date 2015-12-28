@@ -30,6 +30,16 @@ public class Chess
 		this.yAxis=yAxis;
 		
 	}
+	
+	public void setChess(Chess chess)
+	{
+		this.color=chess.color;
+		this.name=chess.name;
+		this.code=chess.code;
+		this.xAxis=chess.xAxis;
+		this.yAxis=chess.yAxis;
+		
+	}
 
 	public String getName() {
 		

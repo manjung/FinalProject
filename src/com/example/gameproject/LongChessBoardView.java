@@ -10,7 +10,7 @@ import android.view.View;
 
 
 
-public class ChessBoard1 extends View{
+public class LongChessBoardView extends View{
 	
 	private final int MIN_SIZE = 600;
 	
@@ -32,21 +32,23 @@ public class ChessBoard1 extends View{
 	private Paint paint_Line;				//棋盤畫筆
 	private Paint Paint_ears;               //擦子
     private int textSize;                   //棋中字的大小
-	private boolean IstouchDownCircle;      //已按下圓 
-	private int Num;                        //紀錄按下哪顆棋子
-	private int colorside;                  //紀錄現在是哪一方下棋
-	private Location Loc;                   //紀錄位置
-	
 	private boolean contorlBoundary ;
-	
+    
+	private LongChessRecord longCR;         //棋盤紀錄
 	private Chess[] BlackChess;
 	private Chess[] RedChess;
 
-	public ChessBoard1(Context context,Chess[] BChess,Chess[] RChess)
+	public LongChessBoardView(Context context,LongChessRecord longCR)
 	{
 		super(context);
-		this.BlackChess = BChess;
-		this.RedChess = RChess;
+		this.longCR = longCR;
+		
+	}
+	
+	public void setChess()
+	{
+		this.BlackChess = longCR.getBlackChess();
+		this.RedChess = longCR.getRedChess();
 	}
 	
 	public boolean checkOK(int width,int height)
@@ -80,6 +82,7 @@ public class ChessBoard1 extends View{
 	
 	public void initial()   //初始化各個物件
 	{
+		setChess();
 		setBoundary();
 		setLattice();
 		setChessBoardCoordinate();
@@ -176,17 +179,6 @@ public class ChessBoard1 extends View{
 		
 	}
 
-	protected void onDraw(Canvas canvas)    //開始佈局
-	{
-		canvas.drawColor(tableColor);
-		
-		drawChessBoard(canvas);
-		
-		drawChess(canvas);
-		
-		
-	}
-	
 	public void drawChessBoard(Canvas canvas)    //畫棋盤
 	{
 		
@@ -233,7 +225,19 @@ public class ChessBoard1 extends View{
 		
 	}
 	
-	public void c_TouchDown(float touchX , float touchY)   //觸碰--按下
+	protected void onDraw(Canvas canvas)    //開始佈局
+	{
+		setChess();
+		
+		canvas.drawColor(tableColor);
+		
+		drawChessBoard(canvas);
+		
+		drawChess(canvas);
+		
+	}
+	
+	/*public void c_TouchDown(float touchX , float touchY)   //觸碰--按下
 	{
 		
 		IstouchDownCircle = false;
@@ -301,7 +305,7 @@ public class ChessBoard1 extends View{
 		}
 		
 		IstouchDownCircle = false;
-		invalidate(); 
+		//invalidate(); 
 		
 	}
 	
@@ -332,18 +336,36 @@ public class ChessBoard1 extends View{
 	public boolean checkLocation()
 	{
 		Chess chess;
+		LongChessRecord longCR= new LongChessRecord(BlackChess,RedChess,9,10);
 		
 		if(colorside == 0)
 			chess = new Chess(RedChess[Num]);
-			
 		else
 			chess = new Chess(BlackChess[Num]);
 		
-		LongChessRegulation longChess = new LongChessRegulation (BlackChess,RedChess,Loc,chess);
+		LongChessMoveRegulation longChess = new LongChessMoveRegulation(longCR,Loc,chess);
 		
 		
 		return longChess.CanMove();
+	}*/
+	
+	public float getStartWeight()
+	{
+		
+		return startWeight;
 	}
+	
+	public float getStarHeight()
+	{
+		
+		return starHeight;
+	}
+	
+	public int getLattice()
+	{
+		return lattice;
+	}
+	
 	
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)    //測量view的大小
 	{
