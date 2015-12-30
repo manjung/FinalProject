@@ -12,6 +12,7 @@ public class LongChessRecord
 	private int rowNum;
 	private int columNum;
 	
+	
 	public LongChessRecord(Chess[] Black,Chess[] Red,int row,int colum)
 	{
 		this.BlackChess = Black;
@@ -26,6 +27,7 @@ public class LongChessRecord
 		chessboardNum = new int[row][col];
 		chessboardColor = new int[row][col];
 		chessboardName = new String[row][col];
+
 		
 		for(int i=0 ; i<RedChess.length ; i++)
 		{	
@@ -79,6 +81,50 @@ public class LongChessRecord
 		 setChessBoard(rowNum,columNum);
 		
 	}
+	
+	public void setChangeChess(Chess newChess)
+	{
+		 if(newChess.getColor() == 0)
+		 {
+			 for(int i=0 ; i<RedChess.length ; i++)
+			 {
+				 if(newChess.getXLoc() == RedChess[i].getXLoc()
+						 && newChess.getYLoc() == RedChess[i].getYLoc())
+				 {
+					 RedChess[i].setChess(newChess);
+				 }
+			 }
+			 
+		 }
+		 else
+		 {	
+			 for(int i=0 ; i<BlackChess.length ; i++)
+			 {
+				 if(newChess.getXLoc() == BlackChess[i].getXLoc()
+						 && newChess.getYLoc() == BlackChess[i].getYLoc())
+				 {
+					 BlackChess[i].setChess(newChess);
+				 }
+				 
+			 }
+			 
+			 
+			 
+			 
+		 } 
+		
+		 setChessBoard(rowNum,columNum);
+		
+	}
+	
+	public Chess getChess(int x,int y)
+	{
+		
+		return new Chess(chessboardColor[x][y],chessboardName[x][y],
+				chessboardNum[x][y], x, y, true);
+		
+	}
+
 	
 	public Chess[] getBlackChess()
 	{

@@ -3,11 +3,15 @@ package com.example.gameproject;
 
 public class Player 
 {
-	private String name ;
+	private String name;
+	private int status;   
+	private int side;
 	
-	public Player(String name)
+	public Player(String name,int side,int s)
 	{
 		setPlayer(name);
+		setSide(side);
+		setStatus(s);
 	}
 	
 	public void setPlayer(String name)
@@ -16,9 +20,35 @@ public class Player
 		
 	}
 	
-	public Player getPlayer(String name)
+	public void setStatus(int s)
 	{
-		return new Player(name);
+		this.status = s;
+	}
+	
+	public void setSide(int s)
+	{
+		this.side = s;
+	}
+	
+	public String getName()
+	{
+		return this.name;
+		
+	}
+	
+	public int getStatus()
+	{
+		return this.status;
+	}
+	
+	public int getSide()
+	{
+		return this.side;
+	}
+	
+	public Player getPlayer()
+	{
+		return new Player(name,status,side);
 		
 	}
 }

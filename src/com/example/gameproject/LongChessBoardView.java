@@ -2,9 +2,14 @@ package com.example.gameproject;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 
@@ -30,10 +35,11 @@ public class LongChessBoardView extends View{
 	private Paint paint_BLACKText;          //黑方畫筆
 	private Paint paint_REDText;            //紅方畫筆
 	private Paint paint_Line;				//棋盤畫筆
+	private Paint paint_Back ;              //背景畫筆
 	private Paint Paint_ears;               //擦子
     private int textSize;                   //棋中字的大小
 	private boolean contorlBoundary ;
-    
+	private Bitmap backGroupBitmap;
 	private LongChessRecord longCR;         //棋盤紀錄
 	private Chess[] BlackChess;
 	private Chess[] RedChess;
@@ -42,7 +48,7 @@ public class LongChessBoardView extends View{
 	{
 		super(context);
 		this.longCR = longCR;
-		
+		backGroupBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.images);
 	}
 	
 	public void setChess()
@@ -139,9 +145,7 @@ public class LongChessBoardView extends View{
 	
 	public void setTableColor()   //設定底色
 	{
-		tableColor = getResources().getColor(R.color.gray);
-		
-		
+		tableColor = getResources().getColor(R.color.black);
 	}
 	
 	public void setChessRadiu()   //設定棋子半徑
@@ -156,26 +160,33 @@ public class LongChessBoardView extends View{
 	
 	public void setPaint()        //設定畫筆
 	{
+		Shader mShader = new LinearGradient(0, 0, 80, 80, new int[] {  
+				Color.WHITE, Color.YELLOW }, null,  
+                Shader.TileMode.REPEAT);  
+        
 		paint_Chess = new Paint();
-		paint_Chess.setColor(Color.WHITE);
 		paint_Chess.setStrokeCap(Paint.Cap.ROUND);
+		paint_Chess.setShader(mShader);
+		Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
 		
 		paint_BLACKText = new Paint();
 		paint_BLACKText.setColor(getResources().getColor(R.color.black));
 		paint_BLACKText.setTextSize(textSize);
-		
+		paint_BLACKText.setTypeface( font );
 		paint_REDText = new Paint();
 		paint_REDText.setColor(getResources().getColor(R.color.red));
 		paint_REDText.setTextSize(textSize);
-		
+		paint_REDText.setTypeface( font );
 		paint_Line = new Paint();
-		paint_Line.setColor(getResources().getColor(R.color.Pink));
+		paint_Line.setColor(getResources().getColor(R.color.white));
 		paint_Line.setStrokeWidth(5);
 		paint_Line.setStrokeCap(Paint.Cap.ROUND);
+		paint_Line.setStrokeWidth(7);
 		
 		Paint_ears = new Paint();
 		Paint_ears.setColor(tableColor);
 		Paint_ears.setStrokeWidth(5);
+		Paint_ears.setStrokeWidth(7);
 		
 	}
 
@@ -207,19 +218,28 @@ public class LongChessBoardView extends View{
 		
 		for(int i=0 ; i < RedChess.length ; i++)
 		{
-			canvas.drawCircle(startWeight+RedChess[i].getXLoc()*lattice,
+			if(RedChess[i].getStatus())
+			{
+				canvas.drawCircle(startWeight+RedChess[i].getXLoc()*lattice,
 					starHeight+RedChess[i].getYLoc()*lattice,circleRadiu,paint_Chess);
-			canvas.drawText(RedChess[i].getName(), startWeight+RedChess[i].getXLoc()*lattice-circleRadiu/2, 
+				canvas.drawText(RedChess[i].getName(), startWeight+RedChess[i].getXLoc()*lattice-circleRadiu/2, 
 					starHeight+RedChess[i].getYLoc()*lattice+circleRadiu/2, paint_REDText);
+			}
+			
 			
 		}
 		
 		for(int i=0 ; i < BlackChess.length ; i++)
 		{
-			canvas.drawCircle(startWeight+BlackChess[i].getXLoc()*lattice,
+			if(BlackChess[i].getStatus())
+			{
+			   canvas.drawCircle(startWeight+BlackChess[i].getXLoc()*lattice,
 					starHeight+BlackChess[i].getYLoc()*lattice,circleRadiu,paint_Chess);
-			canvas.drawText(BlackChess[i].getName(), startWeight+BlackChess[i].getXLoc()*lattice-circleRadiu/2, 
+			   canvas.drawText(BlackChess[i].getName(), startWeight+BlackChess[i].getXLoc()*lattice-circleRadiu/2, 
 					starHeight+BlackChess[i].getYLoc()*lattice+circleRadiu/2, paint_BLACKText);
+				
+			}
+			
 			
 		}
 		
@@ -228,126 +248,14 @@ public class LongChessBoardView extends View{
 	protected void onDraw(Canvas canvas)    //開始佈局
 	{
 		setChess();
-		
 		canvas.drawColor(tableColor);
-		
+		//canvas.drawBitmap(backGroupBitmap,0,0,paint_Back);
 		drawChessBoard(canvas);
-		
 		drawChess(canvas);
 		
 	}
 	
-	/*public void c_TouchDown(float touchX , float touchY)   //觸碰--按下
-	{
-		
-		IstouchDownCircle = false;
-		
-		absolTorelat(touchX,touchY);       
-		boolean search = true; 
-		
-		for(int i=0 ; i < RedChess.length && search == true; i++)
-		{
-			if(RedChess[i].getXLoc() == Loc.getXLocation() 
-					&& RedChess[i].getYLoc() == Loc.getYLocation() )
-			{
-				Num=i;
-				colorside = 0;
-				search = false;
-				IstouchDownCircle = true;
-			}
-			
-			
-		}	
-		
-		for(int i=0 ; i < BlackChess.length && search == true; i++)
-		{
-			
-			if(BlackChess[i].getXLoc() == Loc.getXLocation() 
-					&& BlackChess[i].getYLoc() == Loc.getYLocation() )
-			{
-				Num=i;
-				colorside = 1;
-				search = false;
-				IstouchDownCircle = true;
-			}
-			
-		}
-		
-		search = true;
-		
-	}
 	
-	public void c_TouchMove(float touchX , float touchY )  //觸碰--移動
-	{
-		
-		
-		 
-	}
-	
-	public void c_TouchUp(float touchX , float touchY)  //觸碰--離開
-	{
-		
-		if(IstouchDownCircle)
-		{	
-			absolTorelat(touchX ,touchY);        //將改變後的座標存回
-			if(checkLocation())                  //確認落點是否正確
-			{
-				if(colorside == 0)
-				{	
-					RedChess[Num].setXLoc(Loc.getXLocation());
-					RedChess[Num].setYLoc(Loc.getYLocation());
-				}else
-				{
-					BlackChess[Num].setXLoc(Loc.getXLocation());
-					BlackChess[Num].setYLoc(Loc.getYLocation());
-				}	
-			}
-		}
-		
-		IstouchDownCircle = false;
-		//invalidate(); 
-		
-	}
-	
-	public void absolTorelat(float touchX , float touchY)   //絕對座標轉換為相對座標
-	{
-		
-		float x = (touchX-startWeight)/lattice;
-		float y = (touchY-starHeight)/lattice;
-		
-		Loc = new Location();
-		
-		if(x - (int)x >0.5)
-		{
-			Loc.setXLocation((int)x+1);
-		}else
-			
-			Loc.setXLocation((int)x);
-		
-		if(y - (int)y >0.5)
-		{
-			Loc.setYLocation((int)y+1);
-		}else
-			
-		    Loc.setYLocation((int)y);
-		
-	}
-	
-	public boolean checkLocation()
-	{
-		Chess chess;
-		LongChessRecord longCR= new LongChessRecord(BlackChess,RedChess,9,10);
-		
-		if(colorside == 0)
-			chess = new Chess(RedChess[Num]);
-		else
-			chess = new Chess(BlackChess[Num]);
-		
-		LongChessMoveRegulation longChess = new LongChessMoveRegulation(longCR,Loc,chess);
-		
-		
-		return longChess.CanMove();
-	}*/
 	
 	public float getStartWeight()
 	{

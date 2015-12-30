@@ -10,13 +10,14 @@ public class LongChessControler
 	private Location Loc;                   //紀錄位置
 	private Chess[] BlackChess;
 	private Chess[] RedChess;
-	private LongChessRecord           longCR              ;
-	private LongChessBoardView        chessBoard 	      ;
+	private LongChessRecord  longCR;
+	private LongChessBoardView  chessBoard;
 	private float startWeight;
 	private float starHeight;
 	private int lattice;
+	private LongChessBridge LB;
 	
-	public LongChessControler(LongChessRecord longCR,LongChessBoardView chessBoard )
+	public LongChessControler(LongChessRecord longCR,LongChessBoardView chessBoard)
 	{
 		this.longCR = longCR ;
 		this.chessBoard = chessBoard;
@@ -28,7 +29,6 @@ public class LongChessControler
 		this.BlackChess = longCR.getBlackChess();
 		this.RedChess = longCR.getRedChess();
 		
-		
 	}
 	
 	public void set()
@@ -38,7 +38,11 @@ public class LongChessControler
 		this.lattice = chessBoard.getLattice();
 	}
 	
-	
+	public void setBridge(LongChessBridge lb)
+	{
+		this.LB = lb;
+		
+	}
 	
 	public void c_TouchDown(float touchX , float touchY)   //觸碰--按下
 	{
@@ -46,11 +50,10 @@ public class LongChessControler
 		IstouchDownCircle = false;
 		
 		absolTorelat(touchX,touchY);
-		Log.v("Loc.getXLocation()", Integer.toString(Loc.getXLocation()));
-		Log.v("Loc.getYLocation()", Integer.toString(Loc.getYLocation()));
+		
 		boolean search = true; 
 		
-		for(int i=0 ; i < RedChess.length && search == true; i++)
+		for(int i=0 ; i < RedChess.length && search == true && Loc!= null; i++)
 		{
 			if(RedChess[i].getXLoc() == Loc.getXLocation() 
 					&& RedChess[i].getYLoc() == Loc.getYLocation() )
@@ -64,7 +67,7 @@ public class LongChessControler
 			
 		}	
 		
-		for(int i=0 ; i < BlackChess.length && search == true; i++)
+		for(int i=0 ; i < BlackChess.length && search == true && Loc!= null; i++)
 		{
 			
 			if(BlackChess[i].getXLoc() == Loc.getXLocation() 
@@ -92,7 +95,7 @@ public class LongChessControler
 	public void c_TouchUp(float touchX , float touchY)  //觸碰--離開
 	{
 		
-		if(IstouchDownCircle)
+		if(IstouchDownCircle &&  Loc!= null)
 		{	
 			absolTorelat(touchX ,touchY);        //將改變後的座標存回
 			if(checkLocation())                  //確認落點是否正確
@@ -138,38 +141,40 @@ public class LongChessControler
 		float x = (touchX-startWeight)/lattice;
 		float y = (touchY-starHeight)/lattice;
 		
-		Loc = new Location();
+		if( x >= 0 && x <= 8 && y>=0 && y<=9)
+		{	
+			Loc = new Location();
 		
-		if(x - (int)x >0.5)
-		{
-			Loc.setXLocation((int)x+1);
-		}else
+				if(x - (int)x >0.5)
+				{
+					Loc.setXLocation((int)x+1);
+				}else
 			
-			Loc.setXLocation((int)x);
+					Loc.setXLocation((int)x);
 		
-		if(y - (int)y >0.5)
-		{
-			Loc.setYLocation((int)y+1);
-		}else
+				if(y - (int)y >0.5)
+				{
+					Loc.setYLocation((int)y+1);
+				}else
 			
-		    Loc.setYLocation((int)y);
-		
+					Loc.setYLocation((int)y);
+		}
 	}
 	
 	public boolean checkLocation()
 	{
 		Chess chess;
-		LongChessRecord longCR= new LongChessRecord(BlackChess,RedChess,9,10);
 		
-		if(colorside == 0)
-			chess = new Chess(RedChess[Num]);
-		else
-			chess = new Chess(BlackChess[Num]);
+			
+			if(colorside == 0)
+				chess = new Chess(RedChess[Num]);
+			else
+				chess = new Chess(BlackChess[Num]);
 		
-		LongChessMoveRegulation longChess = new LongChessMoveRegulation(longCR,Loc,chess);
+			LB.setLongChessControl(this);
+			return LB.checkLocation(longCR,Loc,chess);
 		
 		
-		return longChess.CanMove();
 	}
 	
 }

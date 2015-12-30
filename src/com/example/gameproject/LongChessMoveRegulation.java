@@ -154,11 +154,8 @@ public class LongChessMoveRegulation
 	
 	private boolean moveNum(int num,boolean b)
 	{
-		if(Loc.getXLocation() > 8 || Loc.getYLocation() >9 || Loc.getXLocation() < 0  //不超出格數
-				|| Loc.getYLocation() < 0)
-		{
-			return false;
-		}else if((Math.abs(Chess.getXLoc()-Loc.getXLocation())
+		
+		if((Math.abs(Chess.getXLoc()-Loc.getXLocation())
 				+Math.abs(Chess.getYLoc()-Loc.getYLocation())) >= num && b==true)
 		{
 			return true;
@@ -349,6 +346,8 @@ public class LongChessMoveRegulation
 		
 		return num;
 	}
+
+	
 	
 	
 }
