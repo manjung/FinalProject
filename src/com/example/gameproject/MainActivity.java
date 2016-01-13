@@ -34,9 +34,10 @@ public class MainActivity extends Activity {
 			@Override
 		   public void onClick(final View v) 
 		   {	 
-				Intent intent = new Intent();
+				/*Intent intent = new Intent();
 			    intent.setClass(MainActivity.this,Login.class);
-			    startActivity(intent);
+			    startActivity(intent);*/
+				changePage("LongChess");
 				
            }         
 
@@ -47,7 +48,7 @@ public class MainActivity extends Activity {
 			@Override
 		   public void onClick(View v) 
 		   {	
-				
+				 changePage("ShortChess");
            }         
 
        });	
@@ -55,8 +56,18 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	public void changePage(String page)
+	{
+		Intent intent = new Intent();
+	    intent.setClass(MainActivity.this,Login.class);
+	    Bundle bundle = new Bundle();
+	    bundle.putString("Page", page);
+	    intent.putExtras(bundle);
+	    startActivity(intent);
+		
+	}
 	
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

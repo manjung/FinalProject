@@ -16,6 +16,8 @@ public class LongChessControler
 	private float starHeight;
 	private int lattice;
 	private LongChessBridge LB;
+	private static int BLACK = 1;
+	private static int RED = 0;
 	
 	public LongChessControler(LongChessRecord longCR,LongChessBoardView chessBoard)
 	{
@@ -53,10 +55,11 @@ public class LongChessControler
 		
 		boolean search = true; 
 		
-		for(int i=0 ; i < RedChess.length && search == true && Loc!= null; i++)
+		for(int i=0 ; i < RedChess.length && search == true ; i++)
 		{
+			
 			if(RedChess[i].getXLoc() == Loc.getXLocation() 
-					&& RedChess[i].getYLoc() == Loc.getYLocation() )
+					&& RedChess[i].getYLoc() == Loc.getYLocation() && RedChess[i].getStatus())
 			{
 				Num=i;
 				colorside = 0;
@@ -67,17 +70,19 @@ public class LongChessControler
 			
 		}	
 		
-		for(int i=0 ; i < BlackChess.length && search == true && Loc!= null; i++)
+		for(int i=0 ; i < BlackChess.length && search == true ; i++)
 		{
-			
 			if(BlackChess[i].getXLoc() == Loc.getXLocation() 
-					&& BlackChess[i].getYLoc() == Loc.getYLocation() )
+					&& BlackChess[i].getYLoc() == Loc.getYLocation() &&  BlackChess[i].getStatus())
 			{
 				Num=i;
 				colorside = 1;
 				search = false;
 				IstouchDownCircle = true;
+				
 			}
+			
+			
 			
 		}
 		
@@ -95,7 +100,7 @@ public class LongChessControler
 	public void c_TouchUp(float touchX , float touchY)  //觸碰--離開
 	{
 		
-		if(IstouchDownCircle &&  Loc!= null)
+		if(IstouchDownCircle)
 		{	
 			absolTorelat(touchX ,touchY);        //將改變後的座標存回
 			if(checkLocation())                  //確認落點是否正確
@@ -111,7 +116,6 @@ public class LongChessControler
 					
 				}else
 				{
-					
 					BlackChess[Num].setXLoc(Loc.getXLocation());
 					BlackChess[Num].setYLoc(Loc.getYLocation());
 					newChess = BlackChess[Num];
@@ -132,20 +136,19 @@ public class LongChessControler
 		
 		longCR.setChangeChess(newChess,colorside,Num);
 		
+		
 	}
 	
 	
 	public void absolTorelat(float touchX , float touchY)   //絕對座標轉換為相對座標
 	{
-		
 		float x = (touchX-startWeight)/lattice;
 		float y = (touchY-starHeight)/lattice;
 		
-		if( x >= 0 && x <= 8 && y>=0 && y<=9)
-		{	
-			Loc = new Location();
 		
-				if(x - (int)x >0.5)
+			Loc = new Location();
+				
+			if(x - (int)x >0.5)
 				{
 					Loc.setXLocation((int)x+1);
 				}else
@@ -158,14 +161,13 @@ public class LongChessControler
 				}else
 			
 					Loc.setYLocation((int)y);
-		}
+		
 	}
 	
 	public boolean checkLocation()
 	{
 		Chess chess;
 		
-			
 			if(colorside == 0)
 				chess = new Chess(RedChess[Num]);
 			else

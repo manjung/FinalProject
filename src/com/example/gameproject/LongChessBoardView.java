@@ -215,7 +215,6 @@ public class LongChessBoardView extends View{
 	
 	public void drawChess(Canvas canvas)     //µe´Ñ¤l
 	{
-		
 		for(int i=0 ; i < RedChess.length ; i++)
 		{
 			if(RedChess[i].getStatus())
@@ -225,7 +224,6 @@ public class LongChessBoardView extends View{
 				canvas.drawText(RedChess[i].getName(), startWeight+RedChess[i].getXLoc()*lattice-circleRadiu/2, 
 					starHeight+RedChess[i].getYLoc()*lattice+circleRadiu/2, paint_REDText);
 			}
-			
 			
 		}
 		
@@ -237,9 +235,9 @@ public class LongChessBoardView extends View{
 					starHeight+BlackChess[i].getYLoc()*lattice,circleRadiu,paint_Chess);
 			   canvas.drawText(BlackChess[i].getName(), startWeight+BlackChess[i].getXLoc()*lattice-circleRadiu/2, 
 					starHeight+BlackChess[i].getYLoc()*lattice+circleRadiu/2, paint_BLACKText);
+			   
 				
 			}
-			
 			
 		}
 		

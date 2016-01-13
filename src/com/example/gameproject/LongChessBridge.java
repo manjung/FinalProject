@@ -1,12 +1,12 @@
 package com.example.gameproject;
 
+import android.util.Log;
+
 public class LongChessBridge 
 {
 	private LongChessControler LCC;
 	private PlayerControl PC;
 	private LongChessRegulation LCRG;
-	private LongChessEatRegulation LCER;
-	
 	
 	public void setLongChessControl(LongChessControler lcc)
 	{
@@ -28,9 +28,7 @@ public class LongChessBridge
 		}else
 		{
 			LCRG = new LongChessRegulation(longCR,loc,chess);
-			
 			boolean check = LCRG.checkDown();
-			
 			if(check)
 			{
 				PC.notifys();

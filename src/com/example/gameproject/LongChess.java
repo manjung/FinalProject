@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class LongChessView extends Activity {
+public class LongChess extends Activity {
 	
 	
 	private static int BLACK = 1;
@@ -62,39 +62,10 @@ public class LongChessView extends Activity {
 		 creatPlayer(player1,player2);
 		 creatChess();
 		 
-		 LB = new LongChessBridge();
+		 set();
 		 
-		 LCR= new LongChessRecord(BlackChess,RedChess,9,10);                   //Chess Model
-		 PR = new PlayerRecord(playerRed,playerBlack);                         //Player Model
+		 setlayout(metrics);
 		 
-		 CV = new LongChessBoardView(LongChessView.this,LCR);                  //Chess View
-		 PV  = new PlayerView(LongChessView.this,PR);                          //Player View
-		 
-		 LCC = new LongChessControler(LCR,CV);                                 //Chess Controler
-		 PC = new PlayerControl(PR,PV);                                        //Player Controler
-		 
-		 LB.setLongChessControl(LCC);
-		 LB.setPlayerControl(PC);
-		 LCC.setBridge(LB);
-		 
-		 layout = new LinearLayout(this);
-		 layout2 = new LinearLayout(this);
-		 viewGroup = new LongChessViewGroup(this);
-		 
-		 layout.setOrientation(LinearLayout.VERTICAL);
-		 layout.setBackgroundColor(Color.BLACK);
-		 layout.addView(CV);
-		 
-		 layout2.setOrientation(LinearLayout.VERTICAL);
-		 layout2.setBackgroundColor(Color.WHITE);
-		 layout2.addView(PV);
-		 
-		 viewGroup.addView(layout, new LinearLayout.LayoutParams(metrics.widthPixels, 
-				 ((metrics.heightPixels)/3)*2));
-		 viewGroup.addView(layout2, new LinearLayout.LayoutParams(metrics.widthPixels, 
-				 metrics.heightPixels));
-		 
-		 setContentView(viewGroup);
 		 
 	}
 	
@@ -144,6 +115,50 @@ public class LongChessView extends Activity {
 	{
 		playerRed   = new Player(p1,RED,ON);
 		playerBlack = new Player(p2,BLACK,WAIT);
+		
+	}
+	
+	public void set()
+	{
+		LB = new LongChessBridge();
+		 
+		 LCR= new LongChessRecord(BlackChess,RedChess,9,10);                   //Chess Model
+		 PR = new PlayerRecord(playerRed,playerBlack);                         //Player Model
+		 
+		 CV = new LongChessBoardView(LongChess.this,LCR);                  //Chess View
+		 PV  = new PlayerView(LongChess.this,PR);                          //Player View
+		 
+		 LCC = new LongChessControler(LCR,CV);                                 //Chess Controler
+		 PC = new PlayerControl(PR,PV);                                        //Player Controler
+		 
+		 LB.setLongChessControl(LCC);
+		 LB.setPlayerControl(PC);
+		 LCC.setBridge(LB);
+		
+		
+	}
+	
+	public void setlayout(DisplayMetrics metrics)
+	{
+		 layout = new LinearLayout(this);
+		 layout2 = new LinearLayout(this);
+		 viewGroup = new LongChessViewGroup(this);
+		 
+		 layout.setOrientation(LinearLayout.VERTICAL);
+		 layout.setBackgroundColor(Color.BLACK);
+		 layout.addView(CV);
+		 
+		 layout2.setOrientation(LinearLayout.VERTICAL);
+		 layout2.setBackgroundColor(Color.WHITE);
+		 layout2.addView(PV);
+		 
+		 viewGroup.addView(layout, new LinearLayout.LayoutParams(metrics.widthPixels,
+				 
+				 ((metrics.heightPixels)/4)*3));
+		 viewGroup.addView(layout2, new LinearLayout.LayoutParams(metrics.widthPixels,
+				 (metrics.heightPixels)/4));
+		
+		 setContentView(viewGroup);
 		
 	}
 	

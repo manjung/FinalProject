@@ -23,21 +23,23 @@ public class LongChessRegulation
 		int[][] color = LCR.getChessboardColor();
 		
 		
-		if(Loc.getXLocation() > 8 && Loc.getYLocation() >9 && Loc.getXLocation() < 0  //不超出格數
+		
+		if(Loc.getXLocation() > 8 && Loc.getYLocation() > 9 && Loc.getXLocation() < 0  //不超出格數
 				&& Loc.getYLocation() < 0)
 		{
+			
 			return false;
 		
 		}else
 		{
-		
+			
 			if( color[Loc.getXLocation()][Loc.getYLocation()] == chess.getColor() )
 			{
 				return false;
 			}else
 			{	
 				LongChessMoveRegulation lcr = new LongChessMoveRegulation(LCR,Loc,chess);
-			
+				
 				if(lcr.CanMove())
 				{
 					if(color[Loc.getXLocation()][Loc.getYLocation()]!=-1)
@@ -60,12 +62,9 @@ public class LongChessRegulation
 					}else
 						return false;
 				}	
-			
 		}	
 				
 		}	
-		
-		
 		
 	}
 }

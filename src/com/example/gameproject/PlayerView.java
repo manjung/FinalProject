@@ -1,5 +1,6 @@
 package com.example.gameproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.view.View.MeasureSpec;
+
 
 public class PlayerView extends View
 {
@@ -70,9 +72,11 @@ public class PlayerView extends View
 		
 	}
 	
+	
 	public void setTableColor()
 	{
-		backGroupBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.images);	
+		backGroupBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.images);
+		
 	}
 	
 	public void setBoundary()   //設定邊界

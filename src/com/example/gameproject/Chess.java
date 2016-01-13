@@ -8,6 +8,7 @@ public class Chess
 	private int xAxis;
 	private int yAxis;
 	private boolean status;
+	private boolean coverup;
 	
 	
 	public Chess(int color,String name,int code,int xAxis,int yAxis,boolean status)
@@ -17,9 +18,21 @@ public class Chess
 		
 	}
 	
+	public Chess(int color,String name,int code,int xAxis,int yAxis,boolean status,boolean coverup)
+	{
+		
+		setChess(color,name,code,xAxis,yAxis,status,coverup);
+		
+	}
+	
 	public Chess(Chess chess)
 	{
 		setChess(chess.color,chess.name,chess.code,chess.xAxis,chess.yAxis,chess.status);
+	}
+	
+	public Chess(Chess chess,boolean coverup)
+	{
+		setChess(chess.color,chess.name,chess.code,chess.xAxis,chess.yAxis,chess.status,coverup);
 	}
 	
 	public void setChess(int color,String name,int code,int xAxis,int yAxis,boolean status)
@@ -33,6 +46,17 @@ public class Chess
 		this.status=status;
 		
 	}
+	public void setChess(int color,String name,int code,int xAxis,int yAxis,
+			boolean status,boolean coverup)
+	{
+		this.color=color;
+		this.name=name;
+		this.code=code;
+		this.xAxis=xAxis;
+		this.yAxis=yAxis;
+		this.status=status;
+		this.coverup= coverup;
+	}
 	
 	public void setChess(Chess chess)
 	{
@@ -45,7 +69,17 @@ public class Chess
 		this.status=chess.status;
 	}
 
-	 
+	public void setChess(Chess chess,boolean coverup)
+	{
+		
+		this.color=chess.color;
+		this.name=chess.name;
+		this.code=chess.code;
+		this.xAxis=chess.xAxis;
+		this.yAxis=chess.yAxis;
+		this.status=chess.status;
+		this.coverup= coverup;
+	}
 	
 	public String getName() {
 		
@@ -77,6 +111,11 @@ public class Chess
 		this.status=s;
 	}
 	
+	public void setCoverup(boolean c)
+	{
+		this.coverup=c;
+	}
+	
 	public int getXLoc()
 	{
 		return xAxis;
@@ -91,6 +130,11 @@ public class Chess
 	{
 		
 		return color;
+	}
+	
+	public boolean getCoverUp()
+	{
+		return coverup;
 	}
 	
 

@@ -20,6 +20,7 @@ public class Login extends Activity {
 
 	private  String player1;
 	private  String player2;
+	private  String Page;
 	private  EditText inputName;
 	private  EditText inputName2;
 	private  Builder dialog;
@@ -32,6 +33,10 @@ public class Login extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		Bundle bundle = getIntent().getExtras();  
+		Page = bundle.getString("Page");
+		
 		inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layout = (LinearLayout)inflater.inflate(R.layout.dialogview, null);
 		//layout2 = (LinearLayout)inflater.inflate(R.layout.dialogview, null);
@@ -55,13 +60,17 @@ public class Login extends Activity {
 				player1 = inputName.getText().toString();
 				player2 = inputName2.getText().toString();
 				Intent intent = new Intent();
-			    intent.setClass(Login.this,LongChessView.class);
+				
+				if(Page.equals("LongChess"))
+					intent.setClass(Login.this,LongChess.class);
+				else 
+					intent.setClass(Login.this,ShortChess.class);
+				
 			    Bundle bundle = new Bundle();
 			    bundle.putString("player1", player1);
 			    bundle.putString("player2", player2);
 		        intent.putExtras(bundle);
 			    startActivity(intent);
-				
 				
 			}
 		});
@@ -76,7 +85,9 @@ public class Login extends Activity {
 		
 		dialog.show();
 		
-	}   
+	} 
+	
+	
 		
 	/*private void setPlayer2() {
 		

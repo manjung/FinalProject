@@ -32,6 +32,7 @@ public class PlayerControl
 		{
 			playerRed.setStatus(WAIT);
 			playerBlack.setStatus(ON);
+			
 		
 		}else if(displaySide() == BLACK)
 		{
@@ -39,6 +40,9 @@ public class PlayerControl
 			playerBlack.setStatus(WAIT);
 			
 		}
+		
+		playerRecord.setPlayerRed(playerRed);
+		playerRecord.setPlayerBlack(playerBlack);
 		
 	}
 	

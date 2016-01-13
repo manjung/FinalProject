@@ -38,7 +38,7 @@ public class LongChessMoveRegulation
 						return checkOutOfWay("X",MinMax[0],MinMax[1],Loc.getXLocation());
 					}
 					
-					return true;
+					
 					
 				}
 				

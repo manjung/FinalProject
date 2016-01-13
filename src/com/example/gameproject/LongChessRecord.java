@@ -71,20 +71,23 @@ public class LongChessRecord
 		 if(colorside == 0)
 		 {
 			 RedChess[Num].setChess(newChess);
+			 
 		 }
-		 else
+		 else if(colorside == 1)
 		 {
 			 BlackChess[Num].setChess(newChess);
 			 
 		 } 
 		
 		 setChessBoard(rowNum,columNum);
-		
+		 
 	}
 	
 	public void setChangeChess(Chess newChess)
 	{
-		 if(newChess.getColor() == 0)
+		
+		
+		if(newChess.getColor() == 0)
 		 {
 			 for(int i=0 ; i<RedChess.length ; i++)
 			 {
@@ -96,7 +99,7 @@ public class LongChessRecord
 			 }
 			 
 		 }
-		 else
+		 else if (newChess.getColor() == 1)
 		 {	
 			 for(int i=0 ; i<BlackChess.length ; i++)
 			 {
@@ -107,9 +110,6 @@ public class LongChessRecord
 				 }
 				 
 			 }
-			 
-			 
-			 
 			 
 		 } 
 		

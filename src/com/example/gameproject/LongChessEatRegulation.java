@@ -28,7 +28,6 @@ public class LongChessEatRegulation
 		if(longCR.getChess(Loc.getXLocation(), Loc.getYLocation()).getColor() != -1)
 		{
 			EatChess = longCR.getChess(Loc.getXLocation(), Loc.getYLocation());
-			Log.v("EatChess", EatChess.toString());
 			return true;
 		}else
 			return false;
@@ -39,19 +38,25 @@ public class LongChessEatRegulation
 	{
 		if(setEatChess())
 		{
-		
-			if(Chess.getCode() == 1)
+			if(Chess.getCode() == 1 && moveNum(1,true))
 			{
-				if(Loc.getYLocation() - Chess.getYLoc() == 0)
+				if( Loc.getYLocation() - Chess.getYLoc() == 0            //只能走直線
+						|| Loc.getXLocation() - Chess.getXLoc() == 0)
 				{
-					int[] MinMax = MinMax(Loc.getXLocation(),Chess.getXLoc());
-					return checkOneinWay("Y",MinMax[0],MinMax[1],Loc.getYLocation());
+				
+					if(Loc.getYLocation() - Chess.getYLoc() == 0)
+					{
+						int[] MinMax = MinMax(Loc.getXLocation(),Chess.getXLoc());
+						return checkOneinWay("Y",MinMax[0],MinMax[1],Loc.getYLocation());
+				
+					}else
+					{
+						int[] MinMax = MinMax(Loc.getYLocation(),Chess.getYLoc());
+						return checkOneinWay("X",MinMax[0],MinMax[1],Loc.getXLocation());
+					}	
 				
 				}else
-				{
-					int[] MinMax = MinMax(Loc.getYLocation(),Chess.getYLoc());
-					return checkOneinWay("X",MinMax[0],MinMax[1],Loc.getXLocation());
-				}	
+					return false;
 			
 			}else 
 			{
@@ -121,6 +126,23 @@ public class LongChessEatRegulation
 		
 		
 		return num;
+	}
+	
+	private boolean moveNum(int num,boolean b)
+	{
+		
+		if((Math.abs(Chess.getXLoc()-Loc.getXLocation())
+				+Math.abs(Chess.getYLoc()-Loc.getYLocation())) >= num && b==true)
+		{
+			return true;
+		}
+		else if((Math.abs(Chess.getXLoc()-Loc.getXLocation())
+				+Math.abs(Chess.getYLoc()-Loc.getYLocation())) == num && b==false)
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 
 
