@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GameProject</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_long_chess_view">LongChessView</string>
+    <string name="title_activity_short_chess_view">ShortChessView</string>
+    <string name="title_activity_login">Login</string>
+
+</resources>
